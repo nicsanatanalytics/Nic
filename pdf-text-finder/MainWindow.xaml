@@ -1,0 +1,69 @@
+<Window x:Class="PdfTextFinder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2000/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2000/xaml"
+        Title="PDF Content Searcher" Height="650" Width="1100" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Folder Path:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="txtFolderPath" VerticalContentAlignment="Center" Padding="5" Height="30"/>
+                <Button Grid.Column="1" Content="Browse..." Click="BrowseButton_Click" Width="80" Margin="10,0,0,0"/>
+            </Grid>
+
+            <TextBlock Text="Search Term (History available in dropdown):" FontWeight="Bold" Margin="0,15,0,5"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="cmbSearchTerm" IsEditable="True" VerticalContentAlignment="Center" Height="30" KeyDown="cmbSearchTerm_KeyDown"/>
+                <Button x:Name="btnSearch" Grid.Column="1" Content="Search PDFs" Click="SearchButton_Click" Width="120" Margin="10,0,0,0" Background="#0078D7" Foreground="White" FontWeight="Bold"/>
+                <Button x:Name="btnStop" Grid.Column="2" Content="Stop" Click="StopButton_Click" Width="80" Margin="10,0,0,0" Background="#D13438" Foreground="White" IsEnabled="False"/>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,10">
+            <ProgressBar x:Name="progressBar" Height="15" Visibility="Collapsed"/>
+            <TextBlock x:Name="lblStatus" Text="Ready" Margin="0,5,0,0" Foreground="Gray"/>
+        </StackPanel>
+
+        <DataGrid x:Name="dgResults" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" 
+                  MouseDoubleClick="dgResults_MouseDoubleClick" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="200"/>
+                <DataGridTextColumn Header="Pages" Binding="{Binding PageNumbers}" Width="80"/>
+                <DataGridTextColumn Header="Context (First Match)" Binding="{Binding Context}" Width="350">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                            <Setter Property="ToolTip" Value="{Binding Context}"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Full Path" Binding="{Binding FullPath}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="3" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Export to Excel" Click="ExportButton_Click" Padding="15,5" Background="#1D6F42" Foreground="White"/>
+            <Button Grid.Column="2" Content="Open Selected File" Click="OpenButton_Click" Padding="15,5"/>
+        </Grid>
+    </Grid>
+</Window>
